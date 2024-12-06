@@ -1,0 +1,213 @@
+Terminals unused in grammar
+
+    PLUS
+    MINUS
+    STAR
+    SLASH
+
+
+Grammar
+
+    0 $accept: declaration $end
+
+    1 declaration: IDENTIFIER
+    2            | IDENTIFIER '=' expression
+
+    3 expression: IDENTIFIER
+    4           | INTEGER
+    5           | expression '+' expression
+    6           | expression '-' expression
+    7           | expression '*' expression
+    8           | expression '/' expression
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '*' (42) 7
+    '+' (43) 5
+    '-' (45) 6
+    '/' (47) 8
+    '=' (61) 2
+    error (256)
+    INTEGER <iVal> (258) 4
+    IDENTIFIER <sVal> (259) 1 2 3
+    PLUS (260)
+    MINUS (261)
+    STAR (262)
+    SLASH (263)
+
+
+Nonterminals, with rules where they appear
+
+    $accept (14)
+        on left: 0
+    declaration (15)
+        on left: 1 2
+        on right: 0
+    expression <llvmVal> (16)
+        on left: 3 4 5 6 7 8
+        on right: 2 5 6 7 8
+
+
+State 0
+
+    0 $accept: • declaration $end
+
+    IDENTIFIER  shift, and go to state 1
+
+    declaration  go to state 2
+
+
+State 1
+
+    1 declaration: IDENTIFIER •
+    2            | IDENTIFIER • '=' expression
+
+    '='  shift, and go to state 3
+
+    $default  reduce using rule 1 (declaration)
+
+
+State 2
+
+    0 $accept: declaration • $end
+
+    $end  shift, and go to state 4
+
+
+State 3
+
+    2 declaration: IDENTIFIER '=' • expression
+
+    INTEGER     shift, and go to state 5
+    IDENTIFIER  shift, and go to state 6
+
+    expression  go to state 7
+
+
+State 4
+
+    0 $accept: declaration $end •
+
+    $default  accept
+
+
+State 5
+
+    4 expression: INTEGER •
+
+    $default  reduce using rule 4 (expression)
+
+
+State 6
+
+    3 expression: IDENTIFIER •
+
+    $default  reduce using rule 3 (expression)
+
+
+State 7
+
+    2 declaration: IDENTIFIER '=' expression •
+    5 expression: expression • '+' expression
+    6           | expression • '-' expression
+    7           | expression • '*' expression
+    8           | expression • '/' expression
+
+    '+'  shift, and go to state 8
+    '-'  shift, and go to state 9
+    '*'  shift, and go to state 10
+    '/'  shift, and go to state 11
+
+    $default  reduce using rule 2 (declaration)
+
+
+State 8
+
+    5 expression: expression '+' • expression
+
+    INTEGER     shift, and go to state 5
+    IDENTIFIER  shift, and go to state 6
+
+    expression  go to state 12
+
+
+State 9
+
+    6 expression: expression '-' • expression
+
+    INTEGER     shift, and go to state 5
+    IDENTIFIER  shift, and go to state 6
+
+    expression  go to state 13
+
+
+State 10
+
+    7 expression: expression '*' • expression
+
+    INTEGER     shift, and go to state 5
+    IDENTIFIER  shift, and go to state 6
+
+    expression  go to state 14
+
+
+State 11
+
+    8 expression: expression '/' • expression
+
+    INTEGER     shift, and go to state 5
+    IDENTIFIER  shift, and go to state 6
+
+    expression  go to state 15
+
+
+State 12
+
+    5 expression: expression • '+' expression
+    5           | expression '+' expression •
+    6           | expression • '-' expression
+    7           | expression • '*' expression
+    8           | expression • '/' expression
+
+    '*'  shift, and go to state 10
+    '/'  shift, and go to state 11
+
+    $default  reduce using rule 5 (expression)
+
+
+State 13
+
+    5 expression: expression • '+' expression
+    6           | expression • '-' expression
+    6           | expression '-' expression •
+    7           | expression • '*' expression
+    8           | expression • '/' expression
+
+    '*'  shift, and go to state 10
+    '/'  shift, and go to state 11
+
+    $default  reduce using rule 6 (expression)
+
+
+State 14
+
+    5 expression: expression • '+' expression
+    6           | expression • '-' expression
+    7           | expression • '*' expression
+    7           | expression '*' expression •
+    8           | expression • '/' expression
+
+    $default  reduce using rule 7 (expression)
+
+
+State 15
+
+    5 expression: expression • '+' expression
+    6           | expression • '-' expression
+    7           | expression • '*' expression
+    8           | expression • '/' expression
+    8           | expression '/' expression •
+
+    $default  reduce using rule 8 (expression)
